@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f7f2">
+  <meta name="description" content="A little water. A little wonder. Meet your animal companion and build a gentle hydration routine at Cozy Springs.">
+  <title>Cozy Springs · Your daily hydration retreat</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <script>
+    try {
+      const saved = localStorage.getItem('cozy-springs-theme');
+      document.documentElement.dataset.theme = saved === 'dark' || saved === 'light' ? saved : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    } catch { document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+  </script>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./dark.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div id="app"></div>
+  <dialog id="dialog" aria-labelledby="dialog-title"></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <noscript>Cozy Springs needs JavaScript to save and display your hydration log.</noscript>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
