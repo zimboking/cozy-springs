@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { initialState, hydrate, dayKey, addDrink, editDrink, removeDrink, totalForDay, weekDays, setGoal, toMl, displayAmount } from '../dist/model.js';
 
-const now = new Date(2026, 9, 18, 12, 30).getTime();
+const now = new Date(2020, 0, 2, 12, 30).getTime();
 test('starts empty with a companion and no fabricated history', () => {
   const s = initialState();
   assert.equal(s.drinks.length, 0);
@@ -26,6 +26,7 @@ test('rejects invalid amounts, types, timestamps and goals', () => {
   for (const amount of [-1, 0, NaN, Infinity, 5001]) assert.throws(() => addDrink(initialState(), { type: 'water', amount, time: now }));
   assert.throws(() => addDrink(initialState(), { type: '<script>', amount: 200, time: now }));
   assert.throws(() => addDrink(initialState(), { type: 'water', amount: 200, time: NaN }));
+  assert.throws(() => addDrink(initialState(), { type: 'water', amount: 200, time: Date.now() + 120000 }));
   for (const goal of [0, 99, 10001, Infinity]) assert.throws(() => setGoal(initialState(), goal));
 });
 test('earns once per completed day, never for extra volume, and keeps memories after editing', () => {
