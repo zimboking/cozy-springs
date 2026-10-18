@@ -26,6 +26,7 @@ Open http://127.0.0.1:4173. Run `npm test` for domain tests and `npm run check` 
 
 - Capybara Mochi, otter Pebble and frog Clover, available from the start.
 - Three tap reactions per companion, occasional idle moments, and a celebration when you log a drink. Tap the spring repeatedly to see different reactions. No sound plays. Behaviors pause off-screen, in dialogs and in background tabs; reduced-motion users still receive written tap responses.
+- Named reaction buttons beneath each companion let you choose an action directly. Tapping the animal continues cycling from the selected action. Behavior assets use a versioned URL so refreshed pages request the updated code and styles.
 - One-tap water, tea and coffee; custom drink volumes and dates; edit, delete and undo.
 - User-set daily goal, millilitres or US fluid ounces, and real calendar-based history.
 - Local browser persistence, day rollover, saved-data validation and multi-tab updates.

@@ -1,7 +1,7 @@
 import { ANIMALS, DRINKS, DECORATIONS, STORAGE_KEY, initialState, hydrate, dayKey, addDrink, editDrink, removeDrink, totalForDay, weekDays, setGoal, toMl, displayAmount } from './model.js';
-import { icon, animalPortrait, scene } from './art.js';
+import { icon, animalPortrait, scene } from './art.js?v=reactions-2';
 import { getTheme, toggleTheme } from './theme.js';
-import { createCompanionController } from './behaviors.js';
+import { createCompanionController, tapOptions } from './behaviors.js?v=reactions-2';
 
 let storageAvailable = true;
 let state;
@@ -29,6 +29,7 @@ const companion = createCompanionController({
     else delete scene.dataset.behavior;
     const caption = scene.querySelector('.behavior-caption');
     if (caption) caption.textContent = behavior?.caption || '';
+    app.querySelectorAll('[data-reaction]').forEach(button => button.classList.toggle('playing', button.dataset.behaviorId === behavior?.id));
   },
 });
 const sceneObserver = new IntersectionObserver(entries => {
@@ -89,6 +90,7 @@ function render() {
   const spring = app.querySelector('.scene-button');
   if (spring) {
     spring.insertAdjacentHTML('beforeend', '<span class="behavior-caption" aria-hidden="true"></span>');
+    app.querySelector('.companion-strip').insertAdjacentHTML('afterend', `<div class="companion-play" role="group" aria-label="Play with ${ANIMALS[state.animal].name}"><span>Play together</span><div>${tapOptions(state.animal).map(option => `<button type="button" data-reaction="${option.index}" data-behavior-id="${option.id}">${option.label}</button>`).join('')}</div></div>`);
     sceneObserver.observe(spring);
   }
   companion.attach(spring ? state.animal : null);
@@ -175,6 +177,12 @@ function setTab(next) { tab = next; render(); window.scrollTo({ top: 0, behavior
 app.addEventListener('click', e => {
   const b = e.target.closest('button, [data-home]');
   if (!b) return;
+  if (b.hasAttribute('data-reaction')) {
+    companion.attach(state.animal);
+    const behavior = companion.react('tap', Number(b.dataset.reaction));
+    if (behavior) notify(behavior.message);
+    return;
+  }
   if (b.dataset.action === 'theme') { if (!toggleTheme()) notify('Theme changed for this visit. Browser storage is unavailable.'); return; }
   if (b.hasAttribute('data-home')) { e.preventDefault(); setTab('today'); return; }
   if (b.dataset.tab) { setTab(b.dataset.tab); return; }

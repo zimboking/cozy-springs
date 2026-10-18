@@ -18,6 +18,15 @@ test('idle and sip reactions are animal-specific and unknown animals are safe', 
   }
   assert.equal(chooseBehavior('unknown', 'tap', 0).id, chooseBehavior('capybara', 'tap', 0).id);
 });
+
+test('choosing a tap reaction plays it and the following tap continues from there', () => {
+  const controller = createCompanionController({ show: () => {}, schedule: () => 0, cancel: () => {} });
+  controller.attach('capybara');
+  assert.equal(controller.react('tap', 2).id, 'capy-doze');
+  assert.equal(controller.react('tap').id, 'capy-stretch');
+  assert.equal(controller.react('tap', 1).id, 'capy-wiggle');
+  assert.equal(controller.react('tap').id, 'capy-doze');
+});
 test('controller cancels old reactions on scene replacement and respects reduced motion', () => {
   let reduced = false;
   let active = true;

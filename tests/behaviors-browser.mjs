@@ -30,6 +30,11 @@ try {
       await page.clock.runFor(450);
       await page.screenshot({ path: `output/playwright/${id}.png` });
     }
+    for (let index = 0; index < reactions.length; index++) {
+      await page.locator(`[data-reaction="${index}"]`).click();
+      assert.equal(await scene.getAttribute('data-behavior'), reactions[index]);
+      assert.equal(await page.locator('[data-reaction].playing').getAttribute('data-reaction'), String(index));
+    }
     await page.locator('[data-quick="water"]').click();
     assert.equal(await scene.getAttribute('data-behavior'), ({ capybara: 'capy-love', otter: 'otter-splash', frog: 'frog-bubbles' })[animal]);
     await page.clock.runFor(2500);
@@ -48,5 +53,16 @@ try {
   await page.clock.runFor(20000);
   assert.equal(await page.locator('.scene-button').count(), 0);
   assert.deepEqual(errors, []);
-  console.log('PASS: idle reaction, nine distinct keyboard tap reactions, three sip reactions, animation cleanup, phone width, reduced motion and navigation cleanup; no page errors.');
+  const touch = await browser.newPage({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+  await touch.goto('http://127.0.0.1:4173');
+  for (const id of expected.capybara) {
+    await touch.locator('.scene-button').tap();
+    assert.equal(await touch.locator('.scene-button').getAttribute('data-behavior'), id);
+  }
+  await touch.locator('[data-reaction="0"]').tap();
+  assert.equal(await touch.locator('.scene-button').getAttribute('data-behavior'), 'capy-stretch');
+  await touch.getByRole('button', { name: 'Dark mode', exact: true }).click();
+  await touch.screenshot({ path: 'output/playwright/reaction-controls-mobile.png', fullPage: true });
+  assert.equal(await touch.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+  console.log('PASS: idle, nine keyboard tap reactions, nine named reaction controls, real phone touch cycling, three sip reactions, cleanup, dark phone controls, reduced motion; no page errors.');
 } finally { await browser.close(); }

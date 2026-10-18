@@ -1,3 +1,4 @@
+.companion-play{padding:0 20px 16px;background:#f4f4eb}.companion-play>span{display:block;font-size:10px;color:#59664f;margin-bottom:8px}.companion-play>div{display:flex;gap:8px}.companion-play button{flex:1;min-height:36px;padding:6px 9px;font-size:11px;border:1px solid #9aab8d;border-radius:10px;background:#fafaf3;color:#40543a;transition:background .15s}.companion-play button:hover,.companion-play button.playing{background:#dce8ce;border-color:#668353}.companion-play button.playing{box-shadow:inset 0 0 0 1px #668353}[data-theme="dark"] .companion-play{background:#29372a}[data-theme="dark"] .companion-play>span{color:#b8c6ae}[data-theme="dark"] .companion-play button{background:#263824;border-color:#7f926e;color:#deead4}[data-theme="dark"] .companion-play button:hover,[data-theme="dark"] .companion-play button.playing{background:#435c36;border-color:#aec692}
 .behavior-caption{position:absolute;left:50%;top:22%;transform:translateX(-50%);max-width:85%;padding:7px 12px;border:1px solid #a5b99a;border-radius:14px;background:#f9f8eeed;color:#40543a;font-size:11px;line-height:1.5;text-align:center;pointer-events:none;opacity:0}
 .scene-button[data-behavior] .behavior-caption{opacity:1}
 .behavior-effects>g{opacity:0;pointer-events:none}
@@ -23,17 +24,17 @@
 .scene-button[data-behavior="frog-bubbles"] .effect-bubbles{animation:bubble-drift 2.2s ease-out both;transform-origin:100px 90px}
 .scene-button[data-behavior="frog-bubbles"] .animal-body{animation:cozy-wiggle 2.2s ease-in-out both}
 [data-theme="dark"] .behavior-caption{background:#253b2bed;color:#e0ebd5;border-color:#8ba479}
-@keyframes cozy-stretch{0%,100%{transform:scale(1)}30%,55%{transform:translateY(-6px) scale(.96,1.08)}75%{transform:translateY(2px) scale(1.04,.97)}}
+@keyframes cozy-stretch{0%,100%{transform:scale(1)}30%,55%{transform:translateY(-14px) scale(.88,1.18)}75%{transform:translateY(3px) scale(1.09,.93)}}
 @keyframes paw-stretch{0%,100%{transform:scaleX(1)}35%,60%{transform:scaleX(1.5) translateY(-4px)}}
-@keyframes ear-wiggle{0%,100%{transform:rotate(0)}35%{transform:rotate(-13deg)}70%{transform:rotate(13deg)}}
+@keyframes ear-wiggle{0%,100%{transform:rotate(0)}35%{transform:rotate(-28deg)}70%{transform:rotate(28deg)}}
 @keyframes cozy-wiggle{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-3deg)}40%,80%{transform:rotate(3deg)}}
-@keyframes cozy-doze{0%,100%{transform:scale(1)}30%,70%{transform:translateY(4px) scale(1.03,.96)}}
+@keyframes cozy-doze{0%,100%{transform:scale(1)}30%,70%{transform:translateY(11px) scale(1.08,.86)}}
 @keyframes sleep-drift{0%{opacity:0;transform:translateY(8px)}20%,75%{opacity:1}100%{opacity:0;transform:translateY(-13px)}}
 @keyframes affection-drift{0%{opacity:0;transform:translateY(10px) scale(.7)}25%,65%{opacity:1}100%{opacity:0;transform:translateY(-22px) scale(1.1)}}
 @keyframes pebble-toss{0%,15%,85%,100%{transform:translateY(0) rotate(0)}48%{transform:translateY(-76px) rotate(170deg)}70%{transform:translateY(-20px) rotate(320deg)}}
 @keyframes pebble-paws{0%,100%{transform:translateY(0)}25%,65%{transform:translateY(-7px)}}
 @keyframes paw-wave{0%,100%{transform:translateY(0) rotate(0)}20%,70%{transform:translate(9px,-24px) rotate(-55deg)}35%,55%{transform:translate(9px,-24px) rotate(-18deg)}}
-@keyframes otter-rock{0%,100%{transform:rotate(0)}25%{transform:rotate(-9deg) translateX(-5px)}65%{transform:rotate(9deg) translateX(5px)}}
+@keyframes otter-rock{0%,100%{transform:rotate(0)}25%{transform:rotate(-19deg) translateX(-8px)}65%{transform:rotate(19deg) translateX(8px)}}
 @keyframes splash-bounce{0%,100%{transform:translateY(0)}25%{transform:translateY(5px) scale(1.04,.95)}45%,70%{transform:translateY(-6px)}}
 @keyframes water-splash{0%,15%,100%{opacity:0;transform:scale(.6)}35%,55%{opacity:1;transform:translateY(-9px) scale(1.1)}85%{opacity:0;transform:translateY(8px) scale(1.2)}}
 @keyframes frog-hop{0%,100%{transform:translateY(0) scale(1)}17%{transform:translateY(5px) scale(1.12,.85)}40%{transform:translateY(-34px) scale(.95,1.05)}60%{transform:translateY(4px) scale(1.08,.9)}78%{transform:translateY(-7px)}}

@@ -22,6 +22,12 @@ export function chooseBehavior(animal, trigger, index = 0) {
   return entries[Math.abs(Math.trunc(index)) % entries.length];
 }
 
+export function tapOptions(animal) {
+  const labels = { capybara: ['Stretch', 'Ear wiggle', 'Snooze'], otter: ['Toss pebble', 'Wave hello', 'Rock & float'], frog: ['Happy hop', 'Ribbit', 'Slow blink'] };
+  const id = Object.hasOwn(labels, animal) ? animal : 'capybara';
+  return labels[id].map((label, index) => ({ label, index, id: behaviors[id].tap[index].id }));
+}
+
 export function createCompanionController({ show, isVisible = () => true, reducedMotion = () => false, schedule = setTimeout, cancel = clearTimeout }) {
   let animal = null;
   let idleTimer;
@@ -32,11 +38,11 @@ export function createCompanionController({ show, isVisible = () => true, reduce
     if (!animal || reducedMotion() || !isVisible()) return;
     idleTimer = schedule(() => react('idle'), 12000 + Math.random() * 6000);
   }
-  function react(trigger = 'tap') {
+  function react(trigger = 'tap', selectedIndex) {
     if (!animal || !isVisible()) return null;
     clear();
     const key = `${animal}:${trigger}`;
-    const index = counts.get(key) || 0;
+    const index = Number.isInteger(selectedIndex) && selectedIndex >= 0 ? selectedIndex : counts.get(key) || 0;
     counts.set(key, index + 1);
     const result = chooseBehavior(animal, trigger, index);
     if (!reducedMotion()) {
