@@ -1,6 +1,7 @@
 import { ANIMALS, DRINKS, DECORATIONS, STORAGE_KEY, initialState, hydrate, dayKey, addDrink, editDrink, removeDrink, totalForDay, weekDays, setGoal, toMl, displayAmount } from './model.js';
 import { icon, animalPortrait, scene } from './art.js';
 import { getTheme, toggleTheme } from './theme.js';
+import { createCompanionController } from './behaviors.js';
 
 let storageAvailable = true;
 let state;
@@ -13,6 +14,32 @@ let returnFocus;
 const app = document.querySelector('#app');
 const dialog = document.querySelector('#dialog');
 const toast = document.querySelector('#toast');
+const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+const companion = createCompanionController({
+  reducedMotion: () => motionPreference.matches,
+  isVisible: () => {
+    const scene = app.querySelector('.scene-button');
+    const rect = scene?.getBoundingClientRect();
+    return !document.hidden && !dialog.open && rect && rect.bottom > 0 && rect.top < innerHeight;
+  },
+  show: behavior => {
+    const scene = app.querySelector('.scene-button');
+    if (!scene) return;
+    if (behavior) { void scene.offsetWidth; scene.dataset.behavior = behavior.id; }
+    else delete scene.dataset.behavior;
+    const caption = scene.querySelector('.behavior-caption');
+    if (caption) caption.textContent = behavior?.caption || '';
+  },
+});
+const sceneObserver = new IntersectionObserver(entries => {
+  if (tab !== 'today') return;
+  const scene = app.querySelector('.scene-button');
+  const entry = entries.find(item => item.target === scene);
+  if (!entry) return;
+  if (!entry.isIntersecting || document.hidden) companion.attach(null);
+  else if (!scene.dataset.behavior) companion.attach(state.animal);
+});
+motionPreference.addEventListener('change', () => companion.attach(tab === 'today' ? state.animal : null));
 const unitLabel = () => state.unit === 'oz' ? 'fl oz' : 'ml';
 const amount = n => `${displayAmount(n, state.unit)} <span class="unit">${unitLabel()}</span>`;
 const safe = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -58,6 +85,13 @@ function render() {
   app.querySelector('.progress-inner strong')?.setAttribute('data-unit', unitLabel());
   app.querySelector('.topbar-right').insertAdjacentHTML('afterbegin', '<button class="theme-toggle icon-button" data-action="theme" aria-label="Dark mode" aria-pressed="false"></button>');
   updateThemeToggle();
+  sceneObserver.disconnect();
+  const spring = app.querySelector('.scene-button');
+  if (spring) {
+    spring.insertAdjacentHTML('beforeend', '<span class="behavior-caption" aria-hidden="true"></span>');
+    sceneObserver.observe(spring);
+  }
+  companion.attach(spring ? state.animal : null);
   if (!storageAvailable) app.querySelector('.page-footer>span:last-child').textContent = 'Saving unavailable';
 }
 function todayView() {
@@ -92,13 +126,20 @@ function retreatView() {
 }
 function decorationArt(id) { return `<svg viewBox="0 0 60 60" width="54" height="54" aria-hidden="true">${({ bamboo: '<path d="M39 48V16H19" fill="none" stroke="#879763" stroke-width="9" stroke-linecap="round"/><path d="M19 21v18" stroke="#8eb5ae" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 4"/><ellipse cx="19" cy="45" rx="13" ry="5" fill="#b6cfc1"/>', lilies: '<ellipse cx="30" cy="43" rx="23" ry="10" fill="#8aab7c"/><path d="M17 35q-13-22 5-12 4-27 12-2 21-14 13 10-9 15-30 4" fill="#e6b8a9"/><circle cx="31" cy="32" r="5" fill="#e3bf6c"/>', lanterns: '<path d="M30 4v9m0 33v10" stroke="#867b57" stroke-width="2"/><rect x="15" y="13" width="30" height="34" rx="12" fill="#e8c48b"/><path d="M20 16v27m10-28v30m10-29v27" stroke="#c49c65" fill="none"/><path d="M23 12h14m-14 35h14" stroke="#867b57" stroke-width="3"/>', duck: '<ellipse cx="32" cy="38" rx="21" ry="14" fill="#e8bf61"/><circle cx="21" cy="23" r="12" fill="#efca70"/><path d="m10 23-9 5 12 3" fill="#c98a42"/><circle cx="20" cy="20" r="2" fill="#5b4b32"/><path d="M31 35q12-6 15 1" stroke="#caa14d" stroke-width="2" fill="none"/>' })[id]}</svg>`; }
 function openDialog(content) {
+  companion.attach(null);
   returnFocus = document.activeElement;
   dialog.innerHTML = `<button class="dialog-close icon-button" aria-label="Close dialog">${icon('close')}</button>${content}`;
   dialog.showModal();
   dialog.querySelector('.dialog-close').onclick = () => dialog.close();
 }
 dialog.addEventListener('click', e => { if (e.target === dialog) { const r = dialog.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dialog.close(); } });
-dialog.addEventListener('close', () => { if (returnFocus?.isConnected) returnFocus.focus(); else document.querySelector('#main')?.focus({ preventScroll: true }); });
+dialog.addEventListener('close', () => {
+  const active = document.activeElement;
+  if (active === document.body || active === dialog || dialog.contains(active)) {
+    if (returnFocus?.isConnected) returnFocus.focus(); else document.querySelector('#main')?.focus({ preventScroll: true });
+  }
+  if (tab === 'today' && !app.querySelector('.scene-button')?.dataset.behavior) companion.attach(state.animal);
+});
 function drinkDialog(drink) {
   const current = drink ? new Date(drink.time) : new Date();
   const date = dayKey(current);
@@ -113,6 +154,7 @@ function drinkDialog(drink) {
       const earned = state.earnedDays.length;
       save(drink ? editDrink(state, drink.id, d) : addDrink(state, d));
       dialog.close();
+      if (!drink) companion.react('sip');
       notify(!storageAvailable ? 'Logged for this visit. Browser storage is unavailable.' : state.earnedDays.length > earned ? 'A goal day to remember. Your retreat has a little something new.' : drink ? 'Drink updated.' : 'A little sip, a little care. Drink logged.');
     } catch (err) { dialog.querySelector('#form-error').textContent = err.message; }
   };
@@ -142,7 +184,7 @@ app.addEventListener('click', e => {
     const previousDrinks = state.drinks;
     save(addDrink(state, { type, amount: ({ water: 250, tea: 200, coffee: 180 })[type], time: Date.now() }));
     const addedId = state.drinks.find(d => !previousDrinks.some(x => x.id === d.id))?.id;
-    document.querySelector('.scene-button')?.classList.add('just-sipped');
+    companion.react('sip');
     notify(storageAvailable ? state.earnedDays.length > earned ? 'Goal reached. A little keepsake is waiting in your retreat.' : `${DRINKS[type]} logged. ${ANIMALS[state.animal].name} sends a happy little splash.` : 'Logged for this visit. Browser storage is unavailable.', () => save(removeDrink(state, addedId)));
     return;
   }
@@ -154,11 +196,11 @@ app.addEventListener('click', e => {
   if (b.dataset.action === 'custom') drinkDialog();
   if (b.dataset.action === 'settings') settingsDialog();
   if (b.dataset.action === 'companions') companionDialog();
-  if (b.dataset.action === 'pet') { b.classList.remove('petting'); void b.offsetWidth; b.classList.add('petting'); notify(({ capybara: 'Mochi closes their eyes. This is the life.', otter: 'Pebble offers you their favorite little stone.', frog: 'Clover gives you a tiny, contented ribbit.' })[state.animal]); }
+  if (b.dataset.action === 'pet') { companion.attach(state.animal); const behavior = companion.react('tap'); if (behavior) notify(behavior.message); }
 });
 app.addEventListener('change', e => { if (e.target.id === 'journal-date' && /^\d{4}-\d{2}-\d{2}$/.test(e.target.value) && e.target.value <= dayKey()) { selectedDay = e.target.value; render(); } });
 function checkDay() { if (lastDay !== dayKey()) { lastDay = dayKey(); selectedDay = lastDay; render(); } }
 setInterval(checkDay, 30000);
-document.addEventListener('visibilitychange', () => { if (!document.hidden) checkDay(); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) checkDay(); companion.attach(!document.hidden && tab === 'today' ? state.animal : null); });
 window.addEventListener('storage', e => { if (e.key === STORAGE_KEY || e.key === null) { state = hydrate(e.key === null ? null : e.newValue); render(); } });
 render();

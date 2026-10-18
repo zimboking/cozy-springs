@@ -53,7 +53,14 @@ export function scene(animal, pct, decorations = []) {
   <g fill="none" stroke="#d8e5d7" stroke-width="2.5" opacity=".7"><ellipse class="ripple ripple-one" cx="386" cy="328" rx="121" ry="25"/><ellipse class="ripple ripple-two" cx="386" cy="330" rx="161" ry="39"/><path d="M182 312q40-18 82-9m239 49q42 3 75-13"/></g>
   <g fill="#cbd0bf"><ellipse cx="166" cy="284" rx="35" ry="16" transform="rotate(-22 166 284)"/><ellipse cx="222" cy="260" rx="35" ry="15" transform="rotate(-13 222 260)"/><ellipse cx="291" cy="248" rx="35" ry="14"/><ellipse cx="362" cy="244" rx="35" ry="14"/><ellipse cx="433" cy="246" rx="35" ry="14"/><ellipse cx="503" cy="255" rx="35" ry="14" transform="rotate(10 503 255)"/><ellipse cx="567" cy="274" rx="35" ry="16" transform="rotate(21 567 274)"/><ellipse cx="612" cy="301" rx="29" ry="17" transform="rotate(35 612 301)"/></g>
   ${decorations.includes('bamboo') ? '<g><path d="M572 231v-75h-61" fill="none" stroke="#8a9e65" stroke-width="16" stroke-linecap="round"/><path d="M572 227v-72h-59" fill="none" stroke="#b4c28e" stroke-width="7"/><ellipse cx="508" cy="155" rx="5" ry="8" fill="#667c4e"/><path class="fountain" d="M506 159q-17 51-10 114" fill="none" stroke="#dcebe1" stroke-width="5" stroke-linecap="round" stroke-dasharray="7 8"/><ellipse cx="495" cy="278" rx="18" ry="5" fill="none" stroke="#dcebe1" stroke-width="2"/></g>' : ''}
-  <g class="companion-float" transform="translate(279 164) scale(1.05)">${animalArt(animal, { towel: pct >= 25, happy: pct >= 100 })}</g>
+  <g class="companion-float" transform="translate(279 164) scale(1.05)">${animalArt(animal, { towel: pct >= 25, happy: pct >= 100 })}
+    <g class="behavior-effects" aria-hidden="true">
+      <g class="effect-hearts" fill="#bc7965"><path d="M47 63 36 51C29 40 43 35 47 44c5-9 18-4 12 7Z"/><path d="m155 44-8-9c-6-8 5-12 8-5 4-7 14-3 9 5Z"/></g>
+      <g class="effect-bubbles" fill="none" stroke="#e5f1df" stroke-width="2.5"><circle cx="52" cy="79" r="7"/><circle cx="150" cy="60" r="10"/><circle cx="166" cy="91" r="5"/></g>
+      <g class="effect-splash" fill="#cbe5d9"><ellipse cx="39" cy="125" rx="4" ry="9" transform="rotate(-30 39 125)"/><ellipse cx="160" cy="121" rx="4" ry="10" transform="rotate(35 160 121)"/><ellipse cx="174" cy="140" rx="3" ry="7" transform="rotate(55 174 140)"/></g>
+      <g class="effect-sleep" fill="#fff7df" stroke="#607555" stroke-width=".6" paint-order="stroke"><text x="148" y="68" font-family="Georgia,serif" font-size="16">z</text><text x="161" y="51" font-family="Georgia,serif" font-size="21">z</text></g>
+    </g>
+  </g>
   <path d="M293 333q85 22 176-2" fill="none" stroke="#cce1d3" stroke-width="5" stroke-linecap="round"/>
   ${pct >= 50 ? '<g fill="#e5c36f"><ellipse cx="262" cy="303" rx="8" ry="5" transform="rotate(20 262 303)"/><ellipse cx="466" cy="347" rx="7" ry="4" transform="rotate(-20 466 347)"/></g>' : ''}
   ${pct >= 75 ? '<g fill="#f3e1cc"><path d="M169 239q-12-14-1-15 1-17 9-4 17-3 8 8 8 15-7 10-12 10-9 1"/><path d="M606 226q-12-14-1-15 1-17 9-4 17-3 8 8 8 15-7 10-12 10-9 1"/></g>' : ''}

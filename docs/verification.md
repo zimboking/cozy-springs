@@ -1,5 +1,7 @@
 # Verification, 18 October 2026
 
+Animal behaviors update PASS: 11 unit tests, nine species-specific keyboard tap reactions, three sip reactions, timed idle reaction, reaction cleanup, reduced motion, phone overflow and navigation cleanup verified in Chrome. Existing logging and theme browser checks also passed. Normal-speed pebble-toss screenshot reviewed and animated stone transform observed at -45px vertical displacement. Caption colors follow light/dark themes. No new controls, fabricated data or asset dependencies. Syntax checks and audit pass.
+
 Dark mode update PASS: keyboard-operated header toggle, saved preference across reloads, device preference on first visit, live device-theme changes, preserved drink data, dark native dialog controls, no overflow across all views at 320/390/1440px, and no page errors. Phone screenshot reviewed. Dark primary text (#e6ebdf on #1b241f) and muted text (#b8c6ae on #2b3528) exceed AA contrast; the evening illustration retains the animals' warm colors. All eight hydration tests, syntax checks and npm audit still pass.
 
 PASS: eight Node domain tests cover empty state, local date boundaries, daily totals, invalid inputs, permanent capped rewards, immutable edits/deletion, saved-data recovery and US fluid-ounce conversion. Tests were run failing before model implementation, then passing.

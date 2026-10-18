@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tests/model.test.js",
+    "test": "node --test tests/model.test.js tests/behaviors.test.js",
     "start": "node server.mjs",
-    "check": "node --check dist/model.js && node --check dist/art.js && node --check dist/app.js && node --check dist/theme.js"
+    "check": "node --check dist/model.js && node --check dist/art.js && node --check dist/app.js && node --check dist/theme.js && node --check dist/behaviors.js"
   }
 }

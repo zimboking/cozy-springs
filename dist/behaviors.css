@@ -1,0 +1,44 @@
+.behavior-caption{position:absolute;left:50%;top:22%;transform:translateX(-50%);max-width:85%;padding:7px 12px;border:1px solid #a5b99a;border-radius:14px;background:#f9f8eeed;color:#40543a;font-size:11px;line-height:1.5;text-align:center;pointer-events:none;opacity:0}
+.scene-button[data-behavior] .behavior-caption{opacity:1}
+.behavior-effects>g{opacity:0;pointer-events:none}
+.scene-button[data-behavior] .animal-body{animation:none;transform-origin:100px 145px}
+.scene-button[data-behavior="capy-stretch"] .animal-body{animation:cozy-stretch 2.2s ease-in-out both}
+.scene-button[data-behavior="capy-stretch"] .animal-body>ellipse[cy="143"][rx="12"]{animation:paw-stretch 2.2s ease-in-out both;transform-box:fill-box;transform-origin:center}
+.scene-button[data-behavior="capy-wiggle"] .animal-body{animation:cozy-wiggle 2.2s ease-in-out both}
+.scene-button[data-behavior="capy-wiggle"] .animal-body>ellipse:is([cy="58"],[cy="57"]){animation:ear-wiggle .45s ease-in-out 4;transform-box:fill-box;transform-origin:center bottom}
+.scene-button[data-behavior="capy-doze"] .animal-body{animation:cozy-doze 2.8s ease-in-out both}
+.scene-button[data-behavior="capy-doze"] .effect-sleep{animation:sleep-drift 2.8s ease-out both}
+.scene-button[data-behavior="capy-love"] .animal-body{animation:cozy-stretch 2.2s ease-in-out both}
+.scene-button[data-behavior="capy-love"] .effect-hearts{animation:affection-drift 2.2s ease-out both;transform-origin:100px 80px}
+.scene-button[data-behavior="otter-toss"] .animal-body>ellipse[cy="136"]{animation:pebble-toss 2.2s ease-in-out both;transform-box:fill-box;transform-origin:center}
+.scene-button[data-behavior="otter-toss"] .animal-body>ellipse[cy="134"][rx="13"]{animation:pebble-paws 2.2s ease-in-out both}
+.scene-button[data-behavior="otter-wave"] .animal-body>ellipse[cx="118"][cy="134"]{animation:paw-wave 2.2s ease-in-out both;transform-box:fill-box;transform-origin:left center}
+.scene-button[data-behavior="otter-roll"] .animal-body{animation:otter-rock 2.2s ease-in-out both}
+.scene-button[data-behavior="otter-splash"] .animal-body{animation:splash-bounce 2.2s ease-in-out both}
+.scene-button[data-behavior="otter-splash"] .effect-splash{animation:water-splash 2.2s ease-out both;transform-origin:100px 150px}
+.scene-button[data-behavior="frog-hop"] .animal-body{animation:frog-hop 2.2s ease-in-out both}
+.scene-button[data-behavior="frog-hop"] .effect-splash{animation:water-splash 2.2s ease-out both;transform-origin:100px 150px}
+.scene-button[data-behavior="frog-croak"] .animal-body>ellipse[cx="100"][cy="133"]{animation:frog-croak 2.2s ease-in-out both;transform-box:fill-box;transform-origin:center}
+.scene-button[data-behavior="frog-blink"] .animal-body>circle:is([cy="81"],[cy="83"]){animation:friendly-blink 2.2s ease-in-out both;transform-box:fill-box;transform-origin:center}
+.scene-button[data-behavior="frog-bubbles"] .effect-bubbles{animation:bubble-drift 2.2s ease-out both;transform-origin:100px 90px}
+.scene-button[data-behavior="frog-bubbles"] .animal-body{animation:cozy-wiggle 2.2s ease-in-out both}
+[data-theme="dark"] .behavior-caption{background:#253b2bed;color:#e0ebd5;border-color:#8ba479}
+@keyframes cozy-stretch{0%,100%{transform:scale(1)}30%,55%{transform:translateY(-6px) scale(.96,1.08)}75%{transform:translateY(2px) scale(1.04,.97)}}
+@keyframes paw-stretch{0%,100%{transform:scaleX(1)}35%,60%{transform:scaleX(1.5) translateY(-4px)}}
+@keyframes ear-wiggle{0%,100%{transform:rotate(0)}35%{transform:rotate(-13deg)}70%{transform:rotate(13deg)}}
+@keyframes cozy-wiggle{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-3deg)}40%,80%{transform:rotate(3deg)}}
+@keyframes cozy-doze{0%,100%{transform:scale(1)}30%,70%{transform:translateY(4px) scale(1.03,.96)}}
+@keyframes sleep-drift{0%{opacity:0;transform:translateY(8px)}20%,75%{opacity:1}100%{opacity:0;transform:translateY(-13px)}}
+@keyframes affection-drift{0%{opacity:0;transform:translateY(10px) scale(.7)}25%,65%{opacity:1}100%{opacity:0;transform:translateY(-22px) scale(1.1)}}
+@keyframes pebble-toss{0%,15%,85%,100%{transform:translateY(0) rotate(0)}48%{transform:translateY(-76px) rotate(170deg)}70%{transform:translateY(-20px) rotate(320deg)}}
+@keyframes pebble-paws{0%,100%{transform:translateY(0)}25%,65%{transform:translateY(-7px)}}
+@keyframes paw-wave{0%,100%{transform:translateY(0) rotate(0)}20%,70%{transform:translate(9px,-24px) rotate(-55deg)}35%,55%{transform:translate(9px,-24px) rotate(-18deg)}}
+@keyframes otter-rock{0%,100%{transform:rotate(0)}25%{transform:rotate(-9deg) translateX(-5px)}65%{transform:rotate(9deg) translateX(5px)}}
+@keyframes splash-bounce{0%,100%{transform:translateY(0)}25%{transform:translateY(5px) scale(1.04,.95)}45%,70%{transform:translateY(-6px)}}
+@keyframes water-splash{0%,15%,100%{opacity:0;transform:scale(.6)}35%,55%{opacity:1;transform:translateY(-9px) scale(1.1)}85%{opacity:0;transform:translateY(8px) scale(1.2)}}
+@keyframes frog-hop{0%,100%{transform:translateY(0) scale(1)}17%{transform:translateY(5px) scale(1.12,.85)}40%{transform:translateY(-34px) scale(.95,1.05)}60%{transform:translateY(4px) scale(1.08,.9)}78%{transform:translateY(-7px)}}
+@keyframes frog-croak{0%,100%{transform:scale(1)}30%,65%{transform:scale(1.3,1.25)}45%{transform:scale(1.16,1.1)}}
+@keyframes friendly-blink{0%,22%,40%,64%,82%,100%{transform:scaleY(1)}30%,74%{transform:scaleY(.08)}}
+@keyframes bubble-drift{0%{opacity:0;transform:translateY(20px) scale(.5)}25%,65%{opacity:.9}100%{opacity:0;transform:translateY(-26px) scale(1.1)}}
+@media(max-width:760px){.behavior-caption{font-size:10px;top:15%;padding:5px 10px}}
+@media(prefers-reduced-motion:reduce){.scene-button[data-behavior] .behavior-caption,.behavior-effects>g{display:none}.scene-button[data-behavior] .animal-body,.scene-button[data-behavior] .animal-body>*{animation:none!important;transform:none!important}}
